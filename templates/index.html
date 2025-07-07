@@ -1,1 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Algerian Forest Fire Predictor</title>
+
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body.dark-mode {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+        body.dark-mode .form-container {
+            background-color: #2c2c2c;
+            color: #fff;
+        }
+        body.dark-mode input,
+        body.dark-mode .form-control {
+            background-color: #3c3c3c;
+            color: #fff;
+            border: 1px solid #555;
+        }
+        body.dark-mode .navbar {
+            background-color: #111;
+        }
+        body.dark-mode footer {
+            background-color: #111;
+            color: #ccc;
+        }
+        body.dark-mode canvas {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <a class="navbar-brand" href="#">🔥 Algerian Forest Fire App</a>
+            <button id="darkToggle" class="btn btn-outline-light">🌙 Dark Mode</button>
+        </div>
+    </nav>
+
+    <!-- Form -->
+    <div class="container">
+        <div class="col-md-8 offset-md-2 form-container">
+            <h2 class="title text-center">Enter Fire Weather Parameters to Predict Risk</h2>
+            <form action="/predict" method="post" id="predictForm">
+                <div class="row mb-3">
+                    <div class="col"><input type="number" name="Temperature" class="form-control" placeholder="Temperature" required></div>
+                    <div class="col"><input type="number" name="RH" class="form-control" placeholder="Relative Humidity" required></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col"><input type="number" name="Ws" class="form-control" placeholder="Wind Speed" required></div>
+                    <div class="col"><input type="number" name="Rain" class="form-control" placeholder="Rain" required></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col"><input type="number" name="FFMC" class="form-control" placeholder="FFMC" required></div>
+                    <div class="col"><input type="number" name="DMC" class="form-control" placeholder="DMC" required></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col"><input type="number" name="DC" class="form-control" placeholder="DC" required></div>
+                    <div class="col"><input type="number" name="ISI" class="form-control" placeholder="ISI" required></div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6 offset-md-3">
+                        <input type="number" name="BUI" class="form-control" placeholder="BUI" required>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 col-6 mx-auto mb-4">
+                    <button type="submit" class="btn btn-success btn-lg">🔥 Predict Fire Risk</button>
+                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                </div>
+            </form>
+
+            <!-- Prediction Output -->
+            <div class="text-center mt-4" id="resultBox" style="display:none;">
+                <h4 id="predictionOutput" style="color:#e74c3c;"></h4>
+                <div id="risk-bar" style="height: 30px; width: 100%; background-color: #ddd; border-radius: 5px;">
+                    <div id="risk-fill" style="height: 100%; width: 0; background-color: #28a745; border-radius: 5px; transition: width 1s;"></div>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="mt-5">
+                <h5 class="text-center">📊 Feature Chart (Real-time)</h5>
+                <canvas id="featureChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        Made with ❤️ using Flask & Machine Learning | Algerian Dataset
+    </footer>
+
+    <!-- Chart + RiskBar + DarkMode Toggle Script -->
+    <script>
+        const form = document.getElementById('predictForm');
+        const ctx = document.getElementById('featureChart').getContext('2d');
+
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Temperature', 'RH', 'Ws', 'Rain', 'FFMC', 'DMC', 'DC', 'ISI', 'BUI'],
+                datasets: [{
+                    label: 'Input Features',
+                    backgroundColor: '#3498db',
+                    data: Array(9).fill(0)
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const inputs = form.querySelectorAll('input[type="number"]');
+        inputs.forEach((input, i) => {
+            input.addEventListener('input', () => {
+                chart.data.datasets[0].data[i] = parseFloat(input.value) || 0;
+                chart.update();
+            });
+        });
+
+        // Prediction display
+        const urlParams = new URLSearchParams(window.location.search);
+        const prediction = urlParams.get('prediction');
+        if (prediction) {
+            document.getElementById('resultBox').style.display = 'block';
+            const predText = document.getElementById('predictionOutput');
+            predText.innerText = `Predicted Fire Risk: ${prediction}`;
+
+            const riskFill = document.getElementById('risk-fill');
+            const value = parseFloat(prediction);
+            let width = Math.min(Math.max(value * 10, 10), 100);
+            riskFill.style.width = width + '%';
+            if (value < 0.3) riskFill.style.backgroundColor = '#28a745';
+            else if (value < 0.7) riskFill.style.backgroundColor = '#ffc107';
+            else riskFill.style.backgroundColor = '#dc3545';
+        }
+
+        // Dark mode toggle
+        const toggleBtn = document.getElementById('darkToggle');
+        toggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            toggleBtn.innerText = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+        });
+    </script>
+</body>
+</html>
+
 
