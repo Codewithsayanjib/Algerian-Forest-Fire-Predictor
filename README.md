@@ -11,7 +11,7 @@ The dataset was sourced from [Kaggle](https://www.kaggle.com/). It contains mete
 
 ## 🧪 Feature Engineering
 
-The dataset was cleaned and transformed as shown in the notebook [`Algerian forest-Model Training(2).ipynb`](Algerian%20forest-Model%20Training%282%29.ipynb), which includes:
+The dataset was cleaned and transformed as shown in the notebook [`Algerian forest - Ridge, Lasso Regression(1).ipynb`], which includes:
 
 * Handling missing or incorrect values
 * Encoding categorical features (e.g., region)
