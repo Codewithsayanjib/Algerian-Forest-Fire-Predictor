@@ -10,7 +10,7 @@ model = pickle.load(open('ridgecv.pkl', 'rb'))
 
 @application.route('/')
 def home():
-    return render_template('Algerian forest fire index.html')
+    return render_template('index.html')
 
 @application.route('/predict', methods=['POST'])
 def predict():
