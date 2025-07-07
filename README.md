@@ -1,57 +1,74 @@
-# Algerian-Forest-Fire-Predictor
+🔥 Algerian Forest Fire Predictor
+A machine learning web application that predicts the Forest Fire Weather Index (FWI) in Algerian regions using meteorological data. Built with regression models, Flask, and deployed on Render.
 
-This project predicts the Forest Fire Index in Algerian regions using machine learning regression models. It includes preprocessing, model training, evaluation, web app development using Flask, and deployment via Render.
+📂 Dataset
+The dataset is sourced from Kaggle and contains daily meteorological observations relevant to forest fire prediction in two Algerian regions.
 
-## 🔍 Dataset
+📁 Included files:
 
-The dataset was sourced from [Kaggle](https://www.kaggle.com/). It contains meteorological data relevant to forest fires in Algeria. Two versions of the dataset are included:
+Algerian_forest_fires_dataset_UPDATE.csv – raw dataset
 
-* `Algerian_forest_fires_dataset_UPDATE.csv` (raw dataset)
-* `Algerian_forest_fires_cleaned_dataset.csv` (after cleaning and preprocessing)
+Algerian_forest_fires_cleaned_dataset.csv – cleaned and preprocessed version
 
-## 🧪 Feature Engineering
+🧪 Feature Engineering & Preprocessing
+Performed as documented in the notebook:
+📓 Algerian forest - Ridge, Lasso Regression(1).ipynb
 
-The dataset was cleaned and transformed as shown in the notebook [`Algerian forest - Ridge, Lasso Regression(1).ipynb`], which includes:
+Steps included:
 
-* Handling missing or incorrect values
-* Encoding categorical features (e.g., region)
-* Normalization and scaling
+Removal of missing and inconsistent values
 
-## 📈 Model Training
+Conversion of categorical columns (e.g., region)
 
-The following regression models were trained and evaluated:
+Feature correlation analysis and reduction
 
-* **Linear Regression**
-* **Lasso Regression**
-* **Ridge Regression**
-* **ElasticNet Regression**
+Scaling via StandardScaler
 
-Cross-validation was used to compare model performance. Ridge Regression outperformed the others with an R² score of **98.4%**, making it the final choice.
+🤖 Model Training
+Trained and evaluated the following regression models:
 
-## ✅ Final Model
+Linear Regression
 
-* The Ridge Regression model and Scaler were pickled as `ridgecv.pkl` and `scaler.pkl`
+Lasso Regression
 
-## 🌐 Web App
+Ridge Regression
 
-A simple Flask web app (`application.py`) was created to allow users to input values and receive a prediction. The template HTML file is located in the `/templates` folder.
+ElasticNet Regression
 
-### Run Locally
+✅ Ridge Regression was selected as the final model, achieving an R² score of 98.4% using cross-validation.
 
-```bash
+🧠 Final Model Artifacts
+🔸 ridgecv.pkl – trained Ridge regression model
+
+🔸 scaler.pkl – fitted StandardScaler used for input scaling
+
+🌐 Flask Web Application
+Built a simple yet functional web interface using Flask:
+
+application.py: main backend script
+
+index.html: form for user input (located in /templates)
+
+Accepts numeric input, applies preprocessing, and displays the FWI prediction
+
+▶️ Run Locally
+bash
+Copy
+Edit
 pip install -r requirements.txt
 python application.py
-```
+Then open http://127.0.0.1:5000 in your browser.
 
-## 🚀 Deployment
+🚀 Deployment
+The web app has been deployed to Render:
 
-The app was deployed to [Render](https://render.com):
-🔗 [Live App](https://algerian-forest-fire-predictor-7q2x.onrender.com/)
+🔗 Live App → https://algerian-forest-fire-predictor-7q2x.onrender.com/
 
+👨‍💻 Author
+Made with ❤️ by Sayanjib Sur
+As part of a machine learning project to integrate model deployment into real-world applications.
 
+🙌 Contribute
+Feel free to fork, improve, or use this project as a template.
+If you find it helpful, consider ⭐ starring the repo!
 
-## 🙇‍♂️ Author
-
-Created by **Sayanjib Sur** as part of a machine learning deployment exercise.
-
-Feel free to explore, use, or improve the project. Star ⭐ the repository if you find it helpful!
