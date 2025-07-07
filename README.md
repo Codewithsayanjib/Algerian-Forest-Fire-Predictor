@@ -1,4 +1,5 @@
-🔥 Algerian Forest Fire Predictor
+#🔥 Algerian Forest Fire Predictor
+
 A machine learning web application that predicts the Forest Fire Weather Index (FWI) in Algerian regions using meteorological data. Built with regression models, Flask, and deployed on Render.
 
 📂 Dataset
