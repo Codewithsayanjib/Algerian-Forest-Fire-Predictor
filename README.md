@@ -1,8 +1,4 @@
-Absolutely! Here's the final version of your `README.md` — **clean, structured, and ready to copy-paste** directly into your GitHub repo:
 
----
-
-```markdown
 # 🔥 Algerian Forest Fire Predictor
 
 > Predict forest fire risk in Algerian regions using machine learning and meteorological data.  
